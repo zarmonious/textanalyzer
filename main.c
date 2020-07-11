@@ -5,11 +5,15 @@
 
 #define N 100
 
-// Teil A (4. Referenzbeispiel)
+// Teil A
+/**
+ * @see Programmieren in C ( R.Klima, S.Selberherr) https://www.springer.com/de/book/9783709103920
+ */
+
 void my_getline(char str[], long num)
 {
     char c, *strend = str + num - 1, *strtemp = str;
-    if (num > 0 && str)     //stings initialisiert
+    if (num > 0 && str)     //initializes strings
     {
         while (1)
         {
@@ -26,7 +30,7 @@ void my_getline(char str[], long num)
             }
             else
             {
-                printf("Zeichenkette ist zu lang! Bitte nochmals eingeben:\n");
+                printf("String is too long! Please try again:\n");
                 strtemp = str;
                 while (getchar() != '\n') {;}
             }
@@ -86,12 +90,12 @@ void analyze_text(char text[])
 
     textlength = strlen(text);
 
-    for(int i = 0; i < textlength; )                 // i ist position in string
+    for(int i = 0; i < textlength; )                 // i is position in a string
     {
         if (inword == 0)
         {
-            i = i + get_others(text+i);               //schiebt i auf wortanfang
-            inword = 1;                               // sind im wort
+            i = i + get_others(text+i);               //moves i to the beginning of a word
+            inword = 1;                               // is inside a wort
         }
         else
         {
@@ -100,7 +104,7 @@ void analyze_text(char text[])
             inword = 0;
             wordcount = wordcount+1;
 
-            if (lettercount != 0 && lettercount < 10)       // statistik
+            if (lettercount != 0 && lettercount < 10)       // statistics
             {
                 frequencies[lettercount-1] = frequencies[lettercount-1]+1;
             }
@@ -112,10 +116,10 @@ void analyze_text(char text[])
     }
 
 
-    printf("Wortanzahl: %ld\n", wordcount);
-    printf("Statistik:\n");
+    printf("Wordcount: %ld\n", wordcount);
+    printf("Statistics:\n");
     printf("------------------------\n");
-    printf("Laenge   |   Haeufigkeit\n");
+    printf("Length   |   Frequency \n");
 
     for (int j = 1; j <= 10; j++)
     {
@@ -180,27 +184,27 @@ void analyze_text_ptr(char text[])
     int wordcount = 0, inword = 0, lettercount = 0;
     int textlength;
     int frequencies[10] = {0};
-    char *ptr = text;       // zeigt auf die erste buchstabe
+    char *ptr = text;       // points to the first letter
 
     textlength = strlen(text);
 
-    for(int i = 0; i < textlength; )        // i ist position in string
+    for(int i = 0; i < textlength; )        // i is position in a string
     {
         if (inword == 0)
         {
             ptr = get_others_ptr(ptr);
-            i = ptr-text;                      // index von wortanfang
-            inword = 1;                        // sind im wort
+            i = ptr-text;                      // index of a word beginning
+            inword = 1;                        // is inside a word
         }
         else
         {
-            ptr = get_letters_ptr(ptr);         //pointer auf dem nächsten nicht letter
-            lettercount = ptr-&text[i];         // differenz: addr von nächsten nicht letter - addr das letzten wortanfangs
+            ptr = get_letters_ptr(ptr);         // pointer to the next not letter
+            lettercount = ptr-&text[i];         // difference: addr of the next not letter - addr of the last beginning of a word
             i = ptr-text;
             inword = 0;
             wordcount = wordcount+1;
 
-            if (lettercount != 0 && lettercount < 10)       // statistik
+            if (lettercount != 0 && lettercount < 10)       // statistics
             {
                 frequencies[lettercount-1] = frequencies[lettercount-1]+1;
             }
@@ -211,10 +215,10 @@ void analyze_text_ptr(char text[])
         }
     }
 
-    printf("Wortanzahl: %ld\n", wordcount);
-    printf("Statistik:\n");
+    printf("Wordcount: %ld\n", wordcount);
+    printf("Statistics:\n");
     printf("------------------------\n");
-    printf("Laenge   |   Haeufigkeit\n");
+    printf("Length   |   Frequency\n");
 
     for (int j = 1; j <= 10; j++)
     {
@@ -242,13 +246,13 @@ void trim_text(char text[])
     char newtext[textlength+1];
     newtext[0] = '\0';
 
-    for (int i = 0; i < textlength; i++)        // i ist position in string
+    for (int i = 0; i < textlength; i++)        // i is position in a string
     {
         isletter = isalpha(text[i]);
 
         if (isletter != 0)
         {
-            if (inword == 0 && seenword == 1)                // prüft ob altes inword kein Wort war vor dem überschreiben (erstes aml leerlauf)
+            if (inword == 0 && seenword == 1)                // checks that the old inword was not a word (first pass idle)
             {
                 newtext[j] = ' ';
                 j++;
@@ -268,7 +272,7 @@ void trim_text(char text[])
         }
     }
 
-    printf("Nur Woerter: %s\n\n", newtext);
+    printf("Words only: %s\n\n", newtext);
 }
 
 int main()
@@ -278,18 +282,18 @@ int main()
 
     do
     {
-        printf("Texteingabe: ");
+        printf("Text input: ");
         my_getline(input, N);
 
         result = get_letters(input);
-        printf("Buchstaben am Anfang: %ld\n", result);
+        printf("Letters at the beginning: %ld\n", result);
 
       //analyze_text(input);
         analyze_text_ptr(input);
 
         trim_text(input);
 
-        printf("Nochmal (j|n)?\n");
+        printf("Again (y|n)?\n");
         choice = getchar();
         while (getchar() != '\n') {;}
         printf("\n\n");
